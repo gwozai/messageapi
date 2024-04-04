@@ -11,7 +11,17 @@ def index():
 @app.route('/hi')
 def hi():
     return jsonify({"message": "Hello from Flask!"})
-# @app.route('/hi'):
+
+@app.route('/routes', methods=['GET'])
+def get_routes():
+    routes = []
+    for rule in app.url_map.iter_rules():
+        routes.append({
+            'endpoint': rule.endpoint,
+            'methods': ','.join(rule.methods),
+            'path': str(rule),
+        })
+    return jsonify(routes)
 if __name__ == '__main__':
     app.run(
       debug=True,  # 调试打开
